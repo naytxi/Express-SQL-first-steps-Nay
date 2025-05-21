@@ -97,6 +97,77 @@ app.put('/Categories/id/:id', (req, res) => {
  })
 });
 
+app.get('/products', (req, res) => {
+  const sql = 'SELECT * FROM Products';
+  db.query(sql, (err, result) => {
+    if (err) throw err;
+    res.send(result);
+  });
+});
+
+app.get('/categories', (req, res) => {
+  const sql = 'SELECT * FROM Categories';
+  db.query(sql, (err, result) => {
+    if (err) throw err;
+    res.send(result);
+  });
+});
+
+app.get('/productsWithCategories', (req, res) => {
+  const sql = `
+    SELECT 
+      Products.id AS productId, Products.name AS productName, Products.price,
+      Categories.id AS categoryId, Categories.title AS categoryTitle
+    FROM Products
+    JOIN ProductsCategories ON Products.id = ProductsCategories.product_id
+    JOIN Categories ON Categories.id = ProductsCategories.category_id
+  `;
+  db.query(sql, (err, result) => {
+    if (err) throw err;
+    res.send(result);
+  });
+});
+
+app.get('/product/:id', (req, res) => {
+  const sql = `SELECT * FROM Products WHERE id = ${req.params.id}`;
+  db.query(sql, (err, result) => {
+    if (err) throw err;
+    res.send(result);
+  });
+});
+
+app.get('/productsDesc', (req, res) => {
+  const sql = 'SELECT * FROM Products ORDER BY price DESC';
+  db.query(sql, (err, result) => {
+    if (err) throw err;
+    res.send(result);
+  });
+});
+
+app.get('/category/:id', (req, res) => {
+  const sql = `SELECT * FROM Categories WHERE id = ${req.params.id}`;
+  db.query(sql, (err, result) => {
+    if (err) throw err;
+    res.send(result);
+  });
+});
+
+app.get('/product/search/:name', (req, res) => {
+  const name = req.params.name;
+  const sql = `SELECT * FROM Products WHERE name LIKE '%${name}%'`;
+  db.query(sql, (err, result) => {
+    if (err) throw err;
+    res.send(result);
+  });
+});
+
+app.delete('/product/:id', (req, res) => {
+  const sql = `DELETE FROM Products WHERE id = ${req.params.id}`;
+  db.query(sql, (err, result) => {
+    if (err) throw err;
+    res.send('Producto eliminado correctamente');
+  });
+});
 
 
 
