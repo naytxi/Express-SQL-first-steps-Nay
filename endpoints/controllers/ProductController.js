@@ -58,7 +58,7 @@ const ProductController = {
         res.send('Product updated');
         });
     },
-    
+
     deleteProduct: (req, res) => {
         const sql = `DELETE FROM Products WHERE id = ${req.params.id}`;
         db.query(sql, (err, result) => {
@@ -67,4 +67,7 @@ const ProductController = {
         res.send('Product deleted');
         });
     },
-}
+};
+
+module.exports = ProductController;
+
